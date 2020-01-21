@@ -17,7 +17,9 @@ namespace MvcStok.Models.Entity
         public int SATISID { get; set; }
         public Nullable<int> URUN { get; set; }
         public Nullable<int> MUSTERI { get; set; }
+        [Required(ErrorMessage = "Adeti giriniz.")]
         public Nullable<byte> ADET { get; set; }
+        [Required(ErrorMessage = "Fiyatý giriniz.")]
         public Nullable<decimal> FIYAT { get; set; }
     
         public virtual TBLMUSTERILER TBLMUSTERILER { get; set; }
