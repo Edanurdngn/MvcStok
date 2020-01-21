@@ -1,0 +1,56 @@
+﻿@using MvcStok.Models.Entity
+@using PagedList;
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList<TBLMUSTERILER>
+@{
+    ViewBag.Title = "Musteri";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@*@using(Html.BeginForm("Musteri","Musteri",FormMethod.Get))
+    {
+        <p>
+            Aranacak Müşteri Adı:@Html.TextBox("p")
+            <input type="submit" value="ara" />
+        </p>
+    }*@
+<div margin:0px auto; ><<a href="@Url.Action("YeniMusteri","Musteri")" class="btn btn-primary id=">YENİ MÜŞTERİ EKLE</a><</div>
+<br />
+<table id="tbl1" class='table table-bordered'>
+    <thead>
+        <tr>
+            <th>MÜŞTERİ ID</th>
+            <th>MÜŞTERİ ADI</th>
+            <th>MÜŞTERİ SOYADI</th>
+            <th>SİL</th>
+            <th>GÜNCELLE</th>
+
+        </tr>
+    <tbody>
+
+        @foreach (var mst in Model)
+        {
+            <tr>
+                <th>@mst.MUSTERIID</th>
+                <td>@mst.MUSTERIAD</td>
+                <td>@mst.MUSTERISOYAD</td>
+                <th>@Html.ActionLink("SIL", "SIL", new { id = mst.MUSTERIID }, new { @class = "btn btn-danger", onclick = "return confirm('Gerçekten Silmek İstiyor musunuz?')" })</th>
+                <th><a href="@Url.Action("MusteriGuncelle", "Musteri", new { id = mst.MUSTERIID })" class=" btn btn-success">GÜNCELLE</a></th>
+
+            </tr>
+        }
+    </tbody>
+</table>
+@*@Html.PagedListPager((IPagedList)Model, sayfa => Url.Action("Musteri", new { sayfa }))*@
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-html5-1.5.6/fh-3.1.4/datatables.min.js"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+<script>
+    $('#tbl1').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Turkish.json'
+        }
+
+    });
+</script>

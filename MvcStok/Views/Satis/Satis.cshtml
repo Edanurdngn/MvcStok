@@ -1,0 +1,83 @@
+﻿
+@using MvcStok.Models;
+@model List<SatisDto>
+
+@{
+    ViewBag.Title = "Satis";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div><a href="@Url.Action("YeniSatis", "Satis")" class="btn btn-primary" >SATIŞ EKLE</a></div>
+<br />
+
+<table id="tbl1" class='table table-bordered'>
+    <thead>
+        <tr>
+
+            <th>ÜRÜN ADI</th>
+            <th>MÜŞTERİ</th>
+            <th>ADET</th>
+            <th>FIYAT</th>
+            <th>SİL</th>
+            <th>GÜNCELLE</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var satis in Model)
+        {
+
+            <tr>
+
+                <th>@satis.URUN</th>
+                <th>@satis.MUSTERI</th>
+                <th>@satis.ADET</th>
+                <th>@satis.FIYAT</th>
+                <th>@Html.ActionLink("SIL", "SIL", new { id = satis.SATISID }, new { @class = "btn btn-danger", onclick = "return confirm('Gerçekten Silmek İstiyor musunuz?')" })</th>
+                <th><a href="@Url.Action("SatisGuncelle","Satis",new {id=satis.SATISID})" class=" btn btn-success">GÜNCELLE</a></th>
+
+            </tr>
+
+
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-html5-1.5.6/fh-3.1.4/datatables.min.js"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+<script>
+    $('#tbl1').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Turkish.json'
+        }
+
+    });
+</script>
+@*@model MvcStok.Models.Entity.TBLSATIS*@
+@*<div class="modal" id="Modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Satış Ekleme</h2>
+            </div>
+            <form>
+                <div class="modal-body">
+                    
+                    <label>Ürünler:</label>
+                    @Html.TextBoxFor(m => m.@satis.URUN, new { @class = "form-control" })
+                    <br />
+                    <label>Müşteriler:</label>
+                    @Html.TextBoxFor(m => m.MUSTERI, new { @class = "form-control" })
+                    <br />
+                    <label>Adet:</label>
+                    @Html.TextBoxFor(m => m.ADET, new { @class = "form-control" })
+                    <br />
+                    <label>Fiyat:</label>
+                    @Html.TextBoxFor(m => m.FIYAT, new { @class = "form-control" })
+                    <br />
+                    <button class="btn btn-info">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+

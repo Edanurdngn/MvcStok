@@ -1,0 +1,36 @@
+﻿@model MvcStok.Models.Entity.TBLSATIS
+@{
+    ViewBag.Title = "SatisGuncelle";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@using (Html.BeginForm("SatisGuncelle", "Satis", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.HiddenFor(x => x.SATISID)
+        @Html.LabelFor(m => m.URUN)
+        @Html.DropDownListFor(m => m.URUN, (List<SelectListItem>)ViewBag.dgr, new { @class = "form-control" })
+        <br />
+        @Html.LabelFor(m => m.MUSTERI)
+        @Html.DropDownListFor(m => m.MUSTERI, (List<SelectListItem>)ViewBag.dgr2, new { @class = "form-control" })
+      
+        @*<br />
+        @Html.LabelFor(m => m.URUN)
+        @Html.DropDownListFor(m => m.URUN, (List<SelectListItem>)ViewBag.dgr, new { @class = "form-control" })*@
+
+        <br />
+        @Html.LabelFor(m => m.FIYAT)
+        @Html.TextBoxFor(m => m.FIYAT, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FIYAT, "", new { @style = "color:red" })
+
+        <br />
+        @Html.LabelFor(m => m.ADET)
+        @Html.TextBoxFor(m => m.ADET, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ADET, "", new { @style = "color:red" })
+
+    </div>
+    <div>
+        <button class="btn btn-warning">Satış Güncelle</button>
+    </div>
+}
+
+

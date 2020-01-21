@@ -1,0 +1,34 @@
+﻿@model MvcStok.Models.Entity.TBLSATIS
+@{
+    ViewBag.Title = "YeniSatis";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@using (Html.BeginForm("YeniSatis", "Satis", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <label>Urun Adı:</label>
+        @Html.DropDownListFor(m => m.URUN, (List<SelectListItem>)ViewBag.dgr, new { @class = "form-control" })
+    </div>
+
+    <div>
+        <label>Müşteri:</label>
+        @Html.DropDownListFor(m => m.MUSTERI, (List<SelectListItem>)ViewBag.dgr2, new { @class = "form-control" })
+    </div>
+    <div>
+        <label>Adet:</label>
+        @Html.TextBoxFor(m => m.ADET, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ADET, "", new { @style = "color:red" })
+    </div>
+
+    <div>
+        <label>Fiyat:</label>
+        @Html.TextBoxFor(m => m.FIYAT, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FIYAT, "", new { @style = "color:red" })
+    </div>
+    <div style="margin-top:15px">
+        <button class="btn btn-info" type="submit">Satış Ekle</button>
+    </div>
+}
+
+
