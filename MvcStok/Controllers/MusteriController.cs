@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MvcStok.Filters;
 using MvcStok.Models.Entity;
 using PagedList;
 using PagedList.Mvc;
 namespace MvcStok.Controllers
 {
+    [AuthenticationFilter]
     public class MusteriController : Controller
     {
         MvsDbstokEntities1 db = new MvsDbstokEntities1();

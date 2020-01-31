@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MvcStok.Filters;
 using MvcStok.Models.Entity;
 using PagedList;
 using PagedList.Mvc;
 namespace MvcStok.Controllers
 {
+    [AuthenticationFilter]
     public class KategoriController : Controller
     {
         // GET: Kategori
@@ -15,7 +17,7 @@ namespace MvcStok.Controllers
         public ActionResult Index(int sayfa = 1)
         {
             //  var degerler = db.TBLKATEGORILER.ToList();
-            var degerler = db.TBLKATEGORILER.ToList().ToPagedList(sayfa, 6);
+            var degerler = db.TBLKATEGORILER.OrderByDescending(x=> x.KATEGORIID).ToList().ToPagedList(sayfa, 6);
             return View(degerler);
         }
         [HttpGet]

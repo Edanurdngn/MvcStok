@@ -15,12 +15,48 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="TBLKARALISTE">
+          <Key>
+            <PropertyRef Name="KARALISTEID" />
+          </Key>
+          <Property Name="KARALISTEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="URUNID" Type="int" />
+          <Property Name="GIRISTARIHI" Type="datetime" />
+          <Property Name="CIKISTARIHI" Type="datetime" />
+          <Property Name="ACIKLAMA1" Type="nvarchar" MaxLength="50" />
+          <Property Name="ACIKLAMA2" Type="nvarchar" MaxLength="50" />
+          <Property Name="KALDIRILDIMI" Type="bit" />
+        </EntityType>
+        <EntityType Name="TBLKASA">
+          <Key>
+            <PropertyRef Name="KASAID" />
+          </Key>
+          <Property Name="KASAID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KASATOPLAM" Type="int" />
+          <Property Name="DEFO" Type="tinyint" />
+          <Property Name="SATISID" Type="int" />
+          <Property Name="ISLEMTARIHI" Type="datetime" />
+        </EntityType>
         <EntityType Name="TBLKATEGORILER">
           <Key>
             <PropertyRef Name="KATEGORIID" />
           </Key>
           <Property Name="KATEGORIID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="KATEGORIADI" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MvsDbstok.dbo.TBLKULLANICI' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TBLKULLANICI">
+          <Key>
+            <PropertyRef Name="KullaniciId" />
+          </Key>
+          <Property Name="KullaniciId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="varchar" MaxLength="50" />
+          <Property Name="Soyad" Type="varchar" MaxLength="50" />
+          <Property Name="Tel" Type="nchar" MaxLength="11" />
+          <Property Name="TC" Type="varchar" MaxLength="11" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Sifre" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="TBLMUSTERILER">
           <Key>
@@ -39,6 +75,7 @@
           <Property Name="MUSTERI" Type="int" />
           <Property Name="ADET" Type="tinyint" />
           <Property Name="FIYAT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TUTAR" Type="int" />
         </EntityType>
         <EntityType Name="TBLURUNLER">
           <Key>
@@ -50,7 +87,21 @@
           <Property Name="URUNKATEGORI" Type="smallint" />
           <Property Name="FIYAT" Type="decimal" Precision="18" Scale="2" />
           <Property Name="STOK" Type="tinyint" />
+          <Property Name="MINSTOK" Type="tinyint" />
+          <Property Name="KARALISTEDEMI" Type="bit" />
         </EntityType>
+        <Association Name="FK_TBLKASA_TBLSATIS">
+          <End Role="TBLSATIS" Type="Self.TBLSATIS" Multiplicity="0..1" />
+          <End Role="TBLKASA" Type="Self.TBLKASA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBLSATIS">
+              <PropertyRef Name="SATISID" />
+            </Principal>
+            <Dependent Role="TBLKASA">
+              <PropertyRef Name="SATISID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TBLSATIS_TBLMUSTERILER">
           <End Role="TBLMUSTERILER" Type="Self.TBLMUSTERILER" Multiplicity="0..1" />
           <End Role="TBLSATIS" Type="Self.TBLSATIS" Multiplicity="*" />
@@ -89,10 +140,27 @@
         </Association>
         <EntityContainer Name="MvsDbstokModelStoreContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLKARALISTE" EntityType="Self.TBLKARALISTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLKASA" EntityType="Self.TBLKASA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLKATEGORILER" EntityType="Self.TBLKATEGORILER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLMUSTERILER" EntityType="Self.TBLMUSTERILER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLSATIS" EntityType="Self.TBLSATIS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLURUNLER" EntityType="Self.TBLURUNLER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLKULLANICI" EntityType="Self.TBLKULLANICI" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TBLKULLANICI].[KullaniciId] AS [KullaniciId], 
+    [TBLKULLANICI].[Ad] AS [Ad], 
+    [TBLKULLANICI].[Soyad] AS [Soyad], 
+    [TBLKULLANICI].[Tel] AS [Tel], 
+    [TBLKULLANICI].[TC] AS [TC], 
+    [TBLKULLANICI].[Email] AS [Email], 
+    [TBLKULLANICI].[Sifre] AS [Sifre]
+    FROM [dbo].[TBLKULLANICI] AS [TBLKULLANICI]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_TBLKASA_TBLSATIS" Association="Self.FK_TBLKASA_TBLSATIS">
+            <End Role="TBLSATIS" EntitySet="TBLSATIS" />
+            <End Role="TBLKASA" EntitySet="TBLKASA" />
+          </AssociationSet>
           <AssociationSet Name="FK_TBLSATIS_TBLMUSTERILER" Association="Self.FK_TBLSATIS_TBLMUSTERILER">
             <End Role="TBLMUSTERILER" EntitySet="TBLMUSTERILER" />
             <End Role="TBLSATIS" EntitySet="TBLSATIS" />
@@ -148,6 +216,8 @@
           <Property Name="FIYAT" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="TBLMUSTERILER" Relationship="Self.FK_TBLSATIS_TBLMUSTERILER" FromRole="TBLSATIS" ToRole="TBLMUSTERILER" />
           <NavigationProperty Name="TBLURUNLER" Relationship="Self.FK_TBLSATIS_TBLURUNLER" FromRole="TBLSATIS" ToRole="TBLURUNLER" />
+          <NavigationProperty Name="TBLKASA" Relationship="MvsDbstokModel.FK_TBLKASA_TBLSATIS" FromRole="TBLSATIS" ToRole="TBLKASA" />
+          <Property Name="TUTAR" Type="Int32" />
         </EntityType>
         <EntityType Name="TBLURUNLER">
           <Key>
@@ -161,6 +231,8 @@
           <Property Name="STOK" Type="Byte" />
           <NavigationProperty Name="TBLKATEGORILER" Relationship="Self.FK_TBLURUNLER_TBLKATEGORILER" FromRole="TBLURUNLER" ToRole="TBLKATEGORILER" />
           <NavigationProperty Name="TBLSATIS" Relationship="Self.FK_TBLSATIS_TBLURUNLER" FromRole="TBLURUNLER" ToRole="TBLSATIS" />
+          <Property Name="MINSTOK" Type="Byte" />
+          <Property Name="KARALISTEDEMI" Type="Boolean" />
         </EntityType>
         <Association Name="FK_TBLURUNLER_TBLKATEGORILER">
           <End Role="TBLKATEGORILER" Type="Self.TBLKATEGORILER" Multiplicity="0..1" />
@@ -216,7 +288,61 @@
             <End Role="TBLURUNLER" EntitySet="TBLURUNLER" />
             <End Role="TBLSATIS" EntitySet="TBLSATIS" />
           </AssociationSet>
+          <EntitySet Name="TBLKASA" EntityType="MvsDbstokModel.TBLKASA" />
+          <EntitySet Name="TBLKARALISTE" EntityType="MvsDbstokModel.TBLKARALISTE" />
+          <EntitySet Name="TBLKULLANICI" EntityType="MvsDbstokModel.TBLKULLANICI" />
+          <AssociationSet Name="FK_TBLKASA_TBLSATIS" Association="MvsDbstokModel.FK_TBLKASA_TBLSATIS">
+            <End Role="TBLSATIS" EntitySet="TBLSATIS" />
+            <End Role="TBLKASA" EntitySet="TBLKASA" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="TBLKASA">
+          <Key>
+            <PropertyRef Name="KASAID" />
+          </Key>
+          <Property Name="KASAID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DEFO" Type="Byte" />
+          <Property Name="SATISID" Type="Int32" />
+          <Property Name="KASATOPLAM" Type="Int32" />
+          <NavigationProperty Name="TBLSATIS" Relationship="MvsDbstokModel.FK_TBLKASA_TBLSATIS" FromRole="TBLKASA" ToRole="TBLSATIS" />
+          <Property Name="ISLEMTARIHI" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TBLKARALISTE">
+          <Key>
+            <PropertyRef Name="KARALISTEID" />
+          </Key>
+          <Property Name="KARALISTEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="URUNID" Type="Int32" />
+          <Property Name="GIRISTARIHI" Type="DateTime" Precision="3" />
+          <Property Name="CIKISTARIHI" Type="DateTime" Precision="3" />
+          <Property Name="ACIKLAMA1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACIKLAMA2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KALDIRILDIMI" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="TBLKULLANICI">
+          <Key>
+            <PropertyRef Name="KullaniciId" />
+          </Key>
+          <Property Name="KullaniciId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tel" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="TC" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sifre" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_TBLKASA_TBLSATIS">
+          <End Type="MvsDbstokModel.TBLSATIS" Role="TBLSATIS" Multiplicity="0..1" />
+          <End Type="MvsDbstokModel.TBLKASA" Role="TBLKASA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBLSATIS">
+              <PropertyRef Name="SATISID" />
+            </Principal>
+            <Dependent Role="TBLKASA">
+              <PropertyRef Name="SATISID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -254,6 +380,7 @@
           <EntitySetMapping Name="TBLSATIS">
             <EntityTypeMapping TypeName="MvsDbstokModel.TBLSATIS">
               <MappingFragment StoreEntitySet="TBLSATIS">
+                <ScalarProperty Name="TUTAR" ColumnName="TUTAR" />
                 <ScalarProperty Name="SATISID" ColumnName="SATISID" />
                 <ScalarProperty Name="URUN" ColumnName="URUN" />
                 <ScalarProperty Name="MUSTERI" ColumnName="MUSTERI" />
@@ -265,12 +392,51 @@
           <EntitySetMapping Name="TBLURUNLER">
             <EntityTypeMapping TypeName="MvsDbstokModel.TBLURUNLER">
               <MappingFragment StoreEntitySet="TBLURUNLER">
+                <ScalarProperty Name="KARALISTEDEMI" ColumnName="KARALISTEDEMI" />
+                <ScalarProperty Name="MINSTOK" ColumnName="MINSTOK" />
                 <ScalarProperty Name="URUNID" ColumnName="URUNID" />
                 <ScalarProperty Name="URUNAD" ColumnName="URUNAD" />
                 <ScalarProperty Name="MARKA" ColumnName="MARKA" />
                 <ScalarProperty Name="URUNKATEGORI" ColumnName="URUNKATEGORI" />
                 <ScalarProperty Name="FIYAT" ColumnName="FIYAT" />
                 <ScalarProperty Name="STOK" ColumnName="STOK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLKASA">
+            <EntityTypeMapping TypeName="MvsDbstokModel.TBLKASA">
+              <MappingFragment StoreEntitySet="TBLKASA">
+                <ScalarProperty Name="ISLEMTARIHI" ColumnName="ISLEMTARIHI" />
+                <ScalarProperty Name="KASATOPLAM" ColumnName="KASATOPLAM" />
+                <ScalarProperty Name="SATISID" ColumnName="SATISID" />
+                <ScalarProperty Name="DEFO" ColumnName="DEFO" />
+                <ScalarProperty Name="KASAID" ColumnName="KASAID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLKARALISTE">
+            <EntityTypeMapping TypeName="MvsDbstokModel.TBLKARALISTE">
+              <MappingFragment StoreEntitySet="TBLKARALISTE">
+                <ScalarProperty Name="KALDIRILDIMI" ColumnName="KALDIRILDIMI" />
+                <ScalarProperty Name="ACIKLAMA2" ColumnName="ACIKLAMA2" />
+                <ScalarProperty Name="ACIKLAMA1" ColumnName="ACIKLAMA1" />
+                <ScalarProperty Name="CIKISTARIHI" ColumnName="CIKISTARIHI" />
+                <ScalarProperty Name="GIRISTARIHI" ColumnName="GIRISTARIHI" />
+                <ScalarProperty Name="URUNID" ColumnName="URUNID" />
+                <ScalarProperty Name="KARALISTEID" ColumnName="KARALISTEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLKULLANICI">
+            <EntityTypeMapping TypeName="MvsDbstokModel.TBLKULLANICI">
+              <MappingFragment StoreEntitySet="TBLKULLANICI">
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TC" ColumnName="TC" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="KullaniciId" ColumnName="KullaniciId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -11,7 +11,6 @@ namespace MvcStok.Models.Entity
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     
     public partial class TBLKATEGORILER
     {
@@ -22,7 +21,6 @@ namespace MvcStok.Models.Entity
         }
     
         public short KATEGORIID { get; set; }
-        [Required (ErrorMessage ="Kategori adýný giriniz.")]
         public string KATEGORIADI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

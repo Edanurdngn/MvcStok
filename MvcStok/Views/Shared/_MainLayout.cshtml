@@ -18,22 +18,31 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Mvc Stok</a>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">Mvc Stok</a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="@Url.Action("Index","Kategori")"/>Kategoriler</a></li>
-                <li><a href="@Url.Action("Urunler","Urunler")">Ürünler</a></li>
+                <li><a href="@Url.Action("Index","Kategori")" />Kategoriler</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown"
+                       asp-area="" asp-controller="Staffs" asp-action="Index" >
+                        Ürünler
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-area="" asp-controller="Staffs" asp-action="Index" href="@Url.Action("Urunler","Urunler")">Ürünler</a></li>
+                        <li><a asp-area="" asp-controller="Certificates" asp-action="Index" href="@Url.Action("KaraListe","KaraListe")">Kara Liste</a></li>
+                    </ul>
+                </li> 
                 <li><a href="@Url.Action("Musteri","Musteri")">Müşteriler</a></li>
                 <li><a href="@Url.Action("Satis","Satis")">Satışlar</a></li>
-                <li><a href="#">Yardım</a></li>
+                <li><a href="@Url.Action("LogOut","Login")">Çıkış Yap</a></li>
             </ul>
         </div>
     </nav>
-   
+
     <div class="container">
         @RenderBody()
     </div>
 
 </body>
 </html>
-

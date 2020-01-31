@@ -6,7 +6,21 @@
     ViewBag.Title = "Satis";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-<div><a href="@Url.Action("YeniSatis", "Satis")" class="btn btn-primary" >SATIŞ EKLE</a></div>
+    
+
+<table>
+    <tr>
+        <th><div><a href="@Url.Action("YeniSatis", "Satis")" class="btn btn-primary">SATIŞ EKLE</a></div></th>
+        <th>
+            <div class="container">
+                Kasa Toplam:@String.Format("{0:C}", Convert.ToDecimal(ViewBag.Sum))
+                <div class="">
+
+                </div>
+            </div>
+        </th>
+    </tr>
+</table>
 <br />
 
 <table id="tbl1" class='table table-bordered'>
@@ -17,6 +31,7 @@
             <th>MÜŞTERİ</th>
             <th>ADET</th>
             <th>FIYAT</th>
+            <th>TUTAR</th>
             <th>SİL</th>
             <th>GÜNCELLE</th>
         </tr>
@@ -32,6 +47,7 @@
                 <th>@satis.MUSTERI</th>
                 <th>@satis.ADET</th>
                 <th>@satis.FIYAT</th>
+                <th>@satis.TUTAR</th>
                 <th>@Html.ActionLink("SIL", "SIL", new { id = satis.SATISID }, new { @class = "btn btn-danger", onclick = "return confirm('Gerçekten Silmek İstiyor musunuz?')" })</th>
                 <th><a href="@Url.Action("SatisGuncelle","Satis",new {id=satis.SATISID})" class=" btn btn-success">GÜNCELLE</a></th>
 
@@ -51,33 +67,7 @@
         }
 
     });
+
 </script>
-@*@model MvcStok.Models.Entity.TBLSATIS*@
-@*<div class="modal" id="Modal1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Satış Ekleme</h2>
-            </div>
-            <form>
-                <div class="modal-body">
-                    
-                    <label>Ürünler:</label>
-                    @Html.TextBoxFor(m => m.@satis.URUN, new { @class = "form-control" })
-                    <br />
-                    <label>Müşteriler:</label>
-                    @Html.TextBoxFor(m => m.MUSTERI, new { @class = "form-control" })
-                    <br />
-                    <label>Adet:</label>
-                    @Html.TextBoxFor(m => m.ADET, new { @class = "form-control" })
-                    <br />
-                    <label>Fiyat:</label>
-                    @Html.TextBoxFor(m => m.FIYAT, new { @class = "form-control" })
-                    <br />
-                    <button class="btn btn-info">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>*@
+
 

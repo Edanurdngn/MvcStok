@@ -7,19 +7,13 @@
     ViewBag.Title = "Musteri";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-@*@using(Html.BeginForm("Musteri","Musteri",FormMethod.Get))
-    {
-        <p>
-            Aranacak Müşteri Adı:@Html.TextBox("p")
-            <input type="submit" value="ara" />
-        </p>
-    }*@
-<div margin:0px auto; ><<a href="@Url.Action("YeniMusteri","Musteri")" class="btn btn-primary id=">YENİ MÜŞTERİ EKLE</a><</div>
+
+<div margin:0px auto; ><a href="@Url.Action("YeniMusteri","Musteri")" class="btn btn-primary id=">YENİ MÜŞTERİ EKLE</a></div>
 <br />
 <table id="tbl1" class='table table-bordered'>
     <thead>
         <tr>
-            <th>MÜŞTERİ ID</th>
+            
             <th>MÜŞTERİ ADI</th>
             <th>MÜŞTERİ SOYADI</th>
             <th>SİL</th>
@@ -31,7 +25,7 @@
         @foreach (var mst in Model)
         {
             <tr>
-                <th>@mst.MUSTERIID</th>
+               
                 <td>@mst.MUSTERIAD</td>
                 <td>@mst.MUSTERISOYAD</td>
                 <th>@Html.ActionLink("SIL", "SIL", new { id = mst.MUSTERIID }, new { @class = "btn btn-danger", onclick = "return confirm('Gerçekten Silmek İstiyor musunuz?')" })</th>
@@ -41,7 +35,7 @@
         }
     </tbody>
 </table>
-@*@Html.PagedListPager((IPagedList)Model, sayfa => Url.Action("Musteri", new { sayfa }))*@
+
 
 
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-html5-1.5.6/fh-3.1.4/datatables.min.js"></script>

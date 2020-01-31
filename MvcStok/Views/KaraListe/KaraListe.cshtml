@@ -1,52 +1,45 @@
 ﻿@using MvcStok.Models;
-@model List<UrunlerDto>
-
+@model List<KaraListeDto>
 @{
-    ViewBag.Title = "Urunler";
+    ViewBag.Title = "KaraListe";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-<div><a href="@Url.Action("YeniUrun", "Urunler")" class="btn btn-primary">YENİ ÜRÜN EKLE</a></div>
+
+
 <br />
 <table id="tbl1" class='table table-bordered'>
     <thead>
         <tr>
 
-            <th>ÜRÜN ADI</th>
-            <th>MARKA</th>
-            <th>KATEGORİ</th>
-            <th>FİYAT</th>
-            <th>STOK</th>
-            <th>MİNİMUM STOK</th>
-            <th>SİL</th>
-            <th>GÜNCELLE</th>
-            <th>KARALİSTE</th>
+            <th>ÜRÜN ID</th>
+            <th>GİRİŞ TARİHİ </th>
+            <th>ÇIKIŞ TARİHİ</th>
+            <th>AÇIKLAMA</th>
+            <th>AÇIKLAMA</th>
+            <th>LİSTEDEN ÇIKAR</th>
         </tr>
     </thead>
     <tbody>
 
-        @foreach (var urun in Model)
+        @foreach (var liste in Model)
         {
             <tr>
-
-                <th>@urun.URUNAD</th>
-                <th>@urun.MARKA</th>
-                <th>@urun.KATEGORİADİ</th>
-                <th>@urun.FIYAT</th>
-                <th>@urun.STOK</th>
-                <th>@urun.MINSTOK</th>
-                <th>@Html.ActionLink("SIL", "SIL", new { id = urun.URUNID }, new { @class = "btn btn-danger", onclick = "return confirm('Gerçekten Silmek İstiyor musunuz?')" })</th>
-                <th><a href="@Url.Action("UrunGuncelle","Urunler",new {id=urun.URUNID})" class=" btn btn-success">GÜNCELLE</a></th>
-                <th><button type="button" class="btn btn-warning" id="send" data-Id="@urun.URUNID">KARALİSTE</button></th>
-
+                <th>@liste.URUNADİ</th>
+                <th>@liste.GIRISTARIHI.ToShortDateString()</th>
+                <th>@liste.CIKISTARIHI.ToShortDateString()</th>
+                <th>@liste.ACIKLAMA1</th>
+                <th>@liste.ACIKLAMA2</th>
+                @*<th><a href="@Url.Action("KaraListedenKaldir","KaraListe",new {id=liste.KARALISTEID})" class=" btn btn-success">LİSTEDEN KALDIR</a></th>*@
+                <th><button type="button" class="btn btn-warning" id="send" data-Id="@liste.KARALISTEID">SEÇ</button></th>
 
             </tr>
-
-
         }
     </tbody>
 </table>
+
 <button type="button" hidden id="modal" data-toggle="modal" data-target="#Modal1">
 </button>
+
 <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-html5-1.5.6/fh-3.1.4/datatables.min.js"></script>
 <link href="~/Content/DataTables/css/dataTables.bootstrap4.css" rel="stylesheet" />
@@ -61,12 +54,11 @@
 </script>
 
 
-
 <div class="modal" data-backdrop="static" id="Modal1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Kara Listeye Ekle</h2>
+                <h2 class="modal-title">Kara Listeden Kaldır</h2>
             </div>
             <form>
                 <div class="modal-body">
@@ -100,8 +92,12 @@
                         <input type="text" class="form-control" readonly name="MinStok" id="MinStok" value="" />
                     </div>
                     <div>
-                        <label>Açıklama:</label>
-                        <textarea name="description" id="description" class="form-control textarea required" aria-required="true"></textarea>
+                        <label>Açıklama1:</label>
+                        <textarea name="description" readonly id="description" class="form-control textarea required" aria-required="true"></textarea>
+                    </div>
+                    <div>
+                        <label>Açıklama2:</label>
+                        <textarea name="description2" id="description2" class="form-control textarea required" aria-required="true"></textarea>
                     </div>
                     <div style="margin-top:15px">
                         <button class="btn btn-info" id="save" type="button">Listeye Ekle</button>
@@ -117,17 +113,19 @@
     $(document).on("click","#send", function () {
         var id = $(this).data("id");
         $.ajax({
-            url: "@Url.Action("UrunGetir","Urunler")",
+            url: "@Url.Action("UrunGetir","KaraListe")",
             type: 'POST',
             data: { id: id },
             success: function (response) {
-                    $("#UrunId").val(response.result[0].UrunId);
-                    $("#UrunAd").val(response.result[0].UrunAd);
-                    $("#Marka").val(response.result[0].Marka);
-                    $("#Kategori").val(response.result[0].KategoriAd);
-                    $("#Fiyat").val(response.result[0].Fiyat);
-                    $("#Stok").val(response.result[0].Stok);
-                    $("#MinStok").val(response.result[0].MinStok);
+                    $("#UrunId").val(response.result.UrunId);
+                    $("#UrunAd").val(response.result.UrunAd);
+                    $("#Marka").val(response.result.Marka);
+                    $("#Kategori").val(response.result.KategoriAd);
+                    $("#Fiyat").val(response.result.Fiyat);
+                    $("#Stok").val(response.result.Stok);
+                    $("#MinStok").val(response.result.MinStok);
+                    $("#description").val(response.result.Aciklama1);
+                    $("#btnClose").click();
                     $("#modal").click();
                 }
         });
@@ -136,15 +134,14 @@
     $(document).on("click", "#save", function () {
         var data = {
             URUNID: $("#UrunId").val(),
-            ACIKLAMA1: $("#description").val(),
+            ACİKLAMA2: $("#description2").val(),
         };
         $.ajax({
-            url: "@Url.Action("KaraListe","Urunler")",
+            url: "@Url.Action("KaraListedenKaldir","KaraListe")",
             type: 'POST',
             data:data,
             success: function (response) {
                 if (response.success == true) {
-                    alert(response.result);
                     $("#UrunId").val();
                     $("#UrunAd").val();
                     $("#Marka").val();
@@ -153,7 +150,8 @@
                     $("#Stok").val();
                     $("#MinStok").val();
                     $("#btnClose").click();
-                    window.location.href = "@Url.Action("Urunler","Urunler")";
+                    alert(response.result);
+                    window.location.href = "@Url.Action("KaraListe","KaraListe")";
                 }
                 else {
                       alert(response.result);

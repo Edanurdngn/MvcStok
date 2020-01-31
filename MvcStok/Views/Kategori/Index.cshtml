@@ -11,7 +11,7 @@
 <table id="tbl1" class='table table-bordered'>
     <thead>
         <tr>
-            <th>KATEGORİ ID</th>
+            
             <th>KATEGORİ ADI</th>
             <th>SİL</th>
             <th>GÜNCELLE</th>
@@ -21,7 +21,7 @@
         @foreach (var ktgr in Model)
         {
             <tr>
-                <th>@ktgr.KATEGORIID</th>
+                
                 <th>@ktgr.KATEGORIADI</th>
                 <th>@Html.ActionLink("SIL", "SIL", new { id = ktgr.KATEGORIID }, new { @class = "btn btn-danger", onclick = "return confirm('Gerçekten Silmek İstiyor musunuz?')" })</th>
                 <th><a href="@Url.Action("KategoriGetir","Kategori",new {id=ktgr.KATEGORIID})" class=" btn btn-success">GÜNCELLE</a></th>

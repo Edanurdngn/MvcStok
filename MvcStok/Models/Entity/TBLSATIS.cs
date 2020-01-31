@@ -11,19 +11,25 @@ namespace MvcStok.Models.Entity
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class TBLSATIS
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TBLSATIS()
+        {
+            this.TBLKASA = new HashSet<TBLKASA>();
+        }
+    
         public int SATISID { get; set; }
         public Nullable<int> URUN { get; set; }
         public Nullable<int> MUSTERI { get; set; }
-        [Required(ErrorMessage = "Adeti giriniz.")]
         public Nullable<byte> ADET { get; set; }
-        [Required(ErrorMessage = "Fiyatý giriniz.")]
         public Nullable<decimal> FIYAT { get; set; }
+        public int TUTAR { get; set; }
     
         public virtual TBLMUSTERILER TBLMUSTERILER { get; set; }
         public virtual TBLURUNLER TBLURUNLER { get; set; }
-      
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TBLKASA> TBLKASA { get; set; }
     }
 }

@@ -1,31 +1,137 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<br />
+<style>
+    .hero-widget {
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+        .hero-widget .icon {
+            display: block;
+            font-size: 96px;
+            line-height: 96px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .hero-widget var {
+            display: block;
+            height: 64px;
+            font-size: 64px;
+            line-height: 64px;
+            font-style: normal;
+        }
+
+        .hero-widget label {
+            font-size: 17px;
+        }
+
+        .hero-widget .options {
+            margin-top: 10px;
+        }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-shopping-cart"></i>
+                </div>
+                <div class="text">
+                    <var>@ViewBag.Count1</var>
+                    <label class="text-muted">Toplam Satış</label>
+                </div>
+                <div class="options">
+                    <a href="@Url.Action("Satis","Satis")" class="btn btn-default btn-lg">Satışlar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-barcode"></i>
+                </div>
+                <div class="text">
+                    <var>@ViewBag.Count2</var>
+                    <label class="text-muted">Toplam Ürün</label>
+                </div>
+                <div class="options">
+                    <a href="@Url.Action("Urunler","Urunler")" class="btn btn-default btn-lg">Ürünler</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-user"></i>
+                </div>
+                <div class="text">
+                    <var>@ViewBag.Count3</var>
+                    <label class="text-muted">Toplam Müşteri</label>
+                </div>
+                <div class="options">
+                    <a href="@Url.Action("Musteri","Musteri")" class="btn btn-default btn-lg">Müşteriler</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-usd"></i>
+                </div>
+                <div class="text">
+                    <var>@ViewBag.Sum</var>
+                    <label class="text-muted">Kasa Toplam</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-th-list"></i>
+
+                </div>
+                <div class="text">
+                    <var>@ViewBag.Count4</var>
+                    <label class="text-muted">Kategoriler</label>
+                </div>
+                <div class="options">
+                    <a href="@Url.Action("Index","Kategori")" class="btn btn-default btn-lg">Kategoriler</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-book"></i>
+                </div>
+                <div class="text">
+                    <var> </var>
+                    <label class="text-muted">Bilgi</label>
+                </div>
+                <div class="options">
+                    <a href="@Url.Action("Bilgi","Bilgi")" class="btn btn-default btn-lg"> Bilgi </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+

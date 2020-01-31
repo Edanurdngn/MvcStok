@@ -34,6 +34,11 @@
         @Html.TextBoxFor(m => m.STOK, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.STOK, "", new { @style = "color:red" })
     </div>
+    <div>
+        <label>MinStok:</label>
+        @Html.TextBoxFor(m => m.MINSTOK, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MINSTOK, "", new { @style = "color:red" })
+    </div>
     <div style="margin-top:15px">
         <button class="btn btn-info" type="submit">Ürün Ekle</button>
     </div>

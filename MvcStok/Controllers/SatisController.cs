@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MvcStok.Filters;
 using MvcStok.Models;
 using MvcStok.Models.Entity;
 namespace MvcStok.Controllers
 {
+    [AuthenticationFilter]
     public class SatisController : Controller
     {
         // GET: Satis
@@ -14,22 +16,26 @@ namespace MvcStok.Controllers
         public ActionResult Satis()
         {
             var satislar = db.TBLSATIS.Select(x => new SatisDto()
-            {
+            {   
                 SATISID=x.SATISID,
                 URUN =x.TBLURUNLER.URUNAD,
                 MUSTERI = x.TBLMUSTERILER.MUSTERIAD,
                 ADET = x.ADET,
-                FIYAT = x.FIYAT
+                FIYAT = x.FIYAT,
+                TUTAR = x.TUTAR
             }).ToList();
-
+            
+            ViewBag.Sum = db.TBLKASA.Select(x => x.KASATOPLAM).Sum();
             return View(satislar);
         }
 
         [HttpGet]
         public ActionResult YeniSatis()
         {
+            
 
-            List<SelectListItem> urunsatis = (from i in db.TBLURUNLER.ToList()
+            List <SelectListItem> urunsatis = (from i in db.TBLURUNLER.ToList()
+                                               where i.KARALISTEDEMI==false
                                              select new SelectListItem
                                              {
                                                  Text = i.URUNAD,
@@ -44,9 +50,8 @@ namespace MvcStok.Controllers
                                                   Value = mst.MUSTERIID.ToString()
                                               }).ToList();
             ViewBag.dgr2 = musteriid;
-            //return View(urunsatis);
-            ////return View(musteriid);
-
+        
+            
             return View();
         }
 
@@ -69,31 +74,43 @@ namespace MvcStok.Controllers
                                                   Value = mst.MUSTERIID.ToString()
                                               }).ToList();
             ViewBag.dgr2 = musteriid;
+
+
             if (!ModelState.IsValid)
             {
                 return View(p2);
             }
-            db.TBLSATIS.Add(p2);
-            db.SaveChanges();
 
+
+            var stokazalt = db.TBLURUNLER.Find(p2.URUN);
+            int fark = Convert.ToInt32(stokazalt.STOK) - Convert.ToInt32(p2.ADET);
+            p2.TUTAR = Convert.ToInt32(p2.ADET * p2.FIYAT);
+            if (stokazalt != null)
+            {
+                stokazalt.STOK = Convert.ToByte(fark);
+            }
+            int tutar = p2.TUTAR;
+            db.TBLSATIS.Add(p2);
+            
+            var kasaekle = db.TBLKASA.Create();
+            { 
+            //kasaekle.SATISID = ;
+            kasaekle.DEFO = 0;
+            kasaekle.KASATOPLAM = p2.TUTAR; 
+            kasaekle.ISLEMTARIHI = DateTime.Now; 
+            }
+            db.TBLKASA.Add(kasaekle);
+            
+            db.SaveChanges();
             return RedirectToAction("Satis", "Satis");
 
         }
-        //public ActionResult YeniSatis()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //public ActionResult YeniSatis(TBLSATIS p)
-        //{
-        //    db.TBLSATIS.Add(p);
-        //    db.SaveChanges();
-        //    return View("Satis");
-        //}
+    
         public ActionResult SIL(int id)
         {
             var satis = db.TBLSATIS.Find(id);
             db.TBLSATIS.Remove(satis);
+           
             db.SaveChanges();
             return RedirectToAction("Satis");
         }
@@ -141,6 +158,7 @@ namespace MvcStok.Controllers
                     satislar.MUSTERI = satısgun.MUSTERI;
                     satislar.FIYAT = satısgun.FIYAT;
                     satislar.ADET = satısgun.ADET;
+                    
                   
                     db.SaveChanges();
                     return RedirectToAction("Satis", "Satis");
@@ -157,6 +175,7 @@ namespace MvcStok.Controllers
             sts.MUSTERI = p1.MUSTERI;
             sts.ADET = p1.ADET;
             sts.FIYAT = p1.FIYAT;
+            
             db.SaveChanges();
             return RedirectToAction("Satis");
         }

@@ -16,6 +16,8 @@ namespace MvcStok.Models
         
         public string KATEGORİADİ { get; set; }
         public Nullable<decimal> FIYAT { get; set; }
+        
         public Nullable<byte> STOK { get; set; }
+        public byte? MINSTOK { get; set; }
     }
 }

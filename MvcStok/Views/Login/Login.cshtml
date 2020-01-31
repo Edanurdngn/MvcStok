@@ -1,0 +1,72 @@
+﻿@model MvcStok.Models.LoginModel
+@{
+    Layout = null;
+}
+<style>
+    .text-danger{
+        font-size:9px;
+        font-weight:bold;
+        color:red;
+    }
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Admin/css/Login/base.css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="login" style="width:350px !important;margin:0 auto; margin-top:200px;">
+        <div class="box">
+
+            <div class="notification tip"><span><strong>Sistem Giriş Paneli</strong> </span></div>
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+            {
+
+        <div class="form col">
+
+
+            @*@Html.LabelFor(f => f.Email)*@
+            @Html.TextBoxFor(f => f.Email, new { @class = "form-control", @Placeholder = "Email" })
+            @Html.ValidationMessageFor(f => f.Email, null, new { @class = "text-danger" })
+
+            <br />
+
+
+            @*@Html.LabelFor(f => f.Sifre)*@
+            @Html.PasswordFor(f => f.Sifre, new { @class = "form-control", @Placeholder = "Şifre" })
+            @Html.ValidationMessageFor(f => f.Sifre, null, new { @class = "text-danger" })
+            <br />
+            <button type="submit" class="btn btn-success btn-block">Login</button><br class="cl" />
+
+
+
+        </div>
+
+            }
+        </div>
+
+    </div>
+
+</body>
+</html>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <div>
+    </div>
+</body>
+</html>
