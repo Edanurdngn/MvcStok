@@ -17,7 +17,7 @@ namespace MvcStok.Controllers
         public ActionResult Index(int sayfa = 1)
         {
             //  var degerler = db.TBLKATEGORILER.ToList();
-            var degerler = db.TBLKATEGORILER.OrderByDescending(x=> x.KATEGORIID).ToList().ToPagedList(sayfa, 6);
+            var degerler = db.TBLKATEGORILER.OrderByDescending(x=> x.KATEGORIID).ToList().ToPagedList(sayfa, 10);
             return View(degerler);
         }
         [HttpGet]

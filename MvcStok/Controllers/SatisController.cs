@@ -16,33 +16,34 @@ namespace MvcStok.Controllers
         public ActionResult Satis()
         {
             var satislar = db.TBLSATIS.Select(x => new SatisDto()
-            {   
-                SATISID=x.SATISID,
-                URUN =x.TBLURUNLER.URUNAD,
+            {
+                SATISID = x.SATISID,
+                URUN = x.TBLURUNLER.URUNAD,
                 MUSTERI = x.TBLMUSTERILER.MUSTERIAD,
                 ADET = x.ADET,
                 FIYAT = x.FIYAT,
                 TUTAR = x.TUTAR
             }).ToList();
-            
+
             ViewBag.Sum = db.TBLKASA.Select(x => x.KASATOPLAM).Sum();
+
             return View(satislar);
         }
 
         [HttpGet]
         public ActionResult YeniSatis()
         {
-            
 
-            List <SelectListItem> urunsatis = (from i in db.TBLURUNLER.ToList()
-                                               where i.KARALISTEDEMI==false
-                                             select new SelectListItem
-                                             {
-                                                 Text = i.URUNAD,
-                                                 Value = i.URUNID.ToString()
-                                             }).ToList();
+
+            List<SelectListItem> urunsatis = (from i in db.TBLURUNLER.ToList()
+                                              where i.KARALISTEDEMI == false
+                                              select new SelectListItem
+                                              {
+                                                  Text = i.URUNAD,
+                                                  Value = i.URUNID.ToString()
+                                              }).ToList();
             ViewBag.dgr = urunsatis;
-            
+
             List<SelectListItem> musteriid = (from mst in db.TBLMUSTERILER.ToList()
                                               select new SelectListItem
                                               {
@@ -50,8 +51,8 @@ namespace MvcStok.Controllers
                                                   Value = mst.MUSTERIID.ToString()
                                               }).ToList();
             ViewBag.dgr2 = musteriid;
-        
-            
+
+
             return View();
         }
 
@@ -91,26 +92,27 @@ namespace MvcStok.Controllers
             }
             int tutar = p2.TUTAR;
             db.TBLSATIS.Add(p2);
-            
+
             var kasaekle = db.TBLKASA.Create();
-            { 
-            //kasaekle.SATISID = ;
-            kasaekle.DEFO = 0;
-            kasaekle.KASATOPLAM = p2.TUTAR; 
-            kasaekle.ISLEMTARIHI = DateTime.Now; 
+            {
+                //kasaekle.SATISID = ;
+                kasaekle.DEFO = 0;
+                kasaekle.KASATOPLAM = p2.TUTAR;
+                kasaekle.ISLEMTARIHI = DateTime.Now;
             }
             db.TBLKASA.Add(kasaekle);
-            
+
             db.SaveChanges();
             return RedirectToAction("Satis", "Satis");
 
         }
-    
+
         public ActionResult SIL(int id)
         {
             var satis = db.TBLSATIS.Find(id);
             db.TBLSATIS.Remove(satis);
-           
+            TBLKASA kasasil = db.TBLKASA.FirstOrDefault(x => x.SATISID == satis.SATISID );
+            { db.TBLKASA.Remove(kasasil);  }
             db.SaveChanges();
             return RedirectToAction("Satis");
         }
@@ -119,11 +121,11 @@ namespace MvcStok.Controllers
         {
             var urun = db.TBLSATIS.Find(id);
             List<SelectListItem> urunıd = (from i in db.TBLURUNLER.ToList()
-                                             select new SelectListItem
-                                             {
-                                                 Text = i.URUNAD,
-                                                 Value = i.URUNID.ToString()
-                                             }).ToList();
+                                           select new SelectListItem
+                                           {
+                                               Text = i.URUNAD,
+                                               Value = i.URUNID.ToString()
+                                           }).ToList();
             ViewBag.dgr = urunıd;
             var musteri = db.TBLSATIS.Find(id);
             List<SelectListItem> musteriid = (from mst in db.TBLMUSTERILER.ToList()
@@ -132,10 +134,10 @@ namespace MvcStok.Controllers
                                                   Text = mst.MUSTERIAD,
                                                   Value = mst.MUSTERIID.ToString()
                                               }).ToList();
-            ViewBag.dgr2= musteriid;
+            ViewBag.dgr2 = musteriid;
             return View(musteri);
             return View(urun);
-           
+
         }
         [HttpPost]
         public ActionResult SatisGuncelle(TBLSATIS satısgun)
@@ -158,8 +160,8 @@ namespace MvcStok.Controllers
                     satislar.MUSTERI = satısgun.MUSTERI;
                     satislar.FIYAT = satısgun.FIYAT;
                     satislar.ADET = satısgun.ADET;
-                    
-                  
+
+
                     db.SaveChanges();
                     return RedirectToAction("Satis", "Satis");
                 }
@@ -175,7 +177,7 @@ namespace MvcStok.Controllers
             sts.MUSTERI = p1.MUSTERI;
             sts.ADET = p1.ADET;
             sts.FIYAT = p1.FIYAT;
-            
+
             db.SaveChanges();
             return RedirectToAction("Satis");
         }

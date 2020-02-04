@@ -13,8 +13,9 @@ namespace MvcStok.Controllers
     {
         MvsDbstokEntities1 db = new MvsDbstokEntities1();
         public ActionResult Index()
-        {    
+        {
             ViewBag.Sum = db.TBLKASA.Select(x => x.KASATOPLAM).Sum();
+
             ViewBag.Count1 = db.TBLSATIS.Count();
             ViewBag.Count2 = db.TBLURUNLER.Count();
             ViewBag.Count3 = db.TBLMUSTERILER.Count();
@@ -22,6 +23,6 @@ namespace MvcStok.Controllers
             return View();
         }
 
-        
+
     }
 }
