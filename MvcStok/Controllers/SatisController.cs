@@ -17,6 +17,7 @@ namespace MvcStok.Controllers
         {
             var satislar = db.TBLSATIS.Select(x => new SatisDto()
             {
+
                 SATISID = x.SATISID,
                 URUN = x.TBLURUNLER.URUNAD,
                 MUSTERI = x.TBLMUSTERILER.MUSTERIAD,
