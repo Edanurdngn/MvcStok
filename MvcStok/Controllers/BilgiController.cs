@@ -15,6 +15,7 @@ namespace MvcStok.Controllers
         // GET: Bilgi
         public ActionResult Bilgi()
         {
+
             return View();
         }
         
